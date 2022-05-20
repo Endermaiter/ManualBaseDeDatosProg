@@ -179,8 +179,10 @@ public class Productos extends javax.swing.JFrame {
     private void botonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarActionPerformed
         Connection con = null;
             try{
+            
+            //conexion base de datos    
+            
             con = Conexion.establecerConexionBD();
-            modelo = (DefaultTableModel) tablaDatos.getModel();
             
             int fila = tablaDatos.getSelectedRow();
             String codigo = tablaDatos.getValueAt(fila, 0).toString();
@@ -190,6 +192,9 @@ public class Productos extends javax.swing.JFrame {
             ps.setInt(1,Integer.valueOf(txtConsulta.getText()));
             ps.execute();
             
+            //tabla
+            
+            modelo = (DefaultTableModel) tablaDatos.getModel();
             modelo.removeRow(fila);
             
             JOptionPane.showMessageDialog(null,"¡Producto Eliminado!");
@@ -203,8 +208,10 @@ public class Productos extends javax.swing.JFrame {
     private void botonInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInsertarActionPerformed
         Connection con = null;
             try{
+            
+            //Conexion Base de Datos   
+                
             con = Conexion.establecerConexionBD();
-            modelo = (DefaultTableModel) tablaDatos.getModel();
             
             ps = (PreparedStatement) con.prepareStatement("INSERT INTO articulos(ID,Nombre,Precio) VALUES(?,?,?)");
             ps.setInt(1,Integer.valueOf(txtID.getText()));
@@ -212,6 +219,9 @@ public class Productos extends javax.swing.JFrame {
             ps.setFloat(3, Float.valueOf(txtPrecio.getText()));
             ps.execute();
             
+            //tabla
+            
+            modelo = (DefaultTableModel) tablaDatos.getModel();
             JOptionPane.showMessageDialog(null,"¡Producto Registrado!");
             Object[]fila = new Object[3];
             fila[0] = txtID.getText();
@@ -229,6 +239,9 @@ public class Productos extends javax.swing.JFrame {
     private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
         Connection con = null;
             try{
+            
+            //Base de Datos    
+            
             con = Conexion.establecerConexionBD();
             ps = (PreparedStatement) con.prepareStatement("UPDATE articulos SET ID=?,Nombre=?,Precio=? WHERE ID=?");
             ps.setInt(1,Integer.valueOf(txtID.getText()));
@@ -236,6 +249,8 @@ public class Productos extends javax.swing.JFrame {
             ps.setFloat(3, Float.valueOf(txtPrecio.getText()));
             ps.setFloat(4, Integer.valueOf(txtID.getText()));
             ps.executeUpdate();
+            
+            //tabla
             
             int fila = tablaDatos.getSelectedRow();
             tablaDatos.setValueAt(txtID.getText(), fila, 0);
@@ -253,6 +268,9 @@ public class Productos extends javax.swing.JFrame {
     private void botonConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConsultaActionPerformed
         Connection con = null;
         try{
+            
+            //base de datos
+            
             con = Conexion.establecerConexionBD();
             ps = (PreparedStatement) con.prepareStatement("SELECT * FROM articulos WHERE ID = ?");
             ps.setInt(1,Integer.valueOf(txtConsulta.getText()));
@@ -273,6 +291,9 @@ public class Productos extends javax.swing.JFrame {
     }//GEN-LAST:event_botonConsultaActionPerformed
 
     private void tablaDatosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosMouseClicked
+        
+        //metodo para colocar los datos en las cajas de texto al clicar en una fila de la tabla
+        
         Connection con = null;
         try{
             con = Conexion.establecerConexionBD();
@@ -347,6 +368,9 @@ public class Productos extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 private void limpiarCajas(){
+    
+    //metodo para limpiar las cajas de texto
+    
     txtID.setText("");
     txtNombre.setText("");
     txtPrecio.setText("");
@@ -354,6 +378,9 @@ private void limpiarCajas(){
 }
 
 private void mostrarDatosTabla(){
+    
+    //método que muestra la tabla de la base de datos al abrir la aplicacion
+    
     Connection con = null;
         try{
             DefaultTableModel modelo = (DefaultTableModel) tablaDatos.getModel();
