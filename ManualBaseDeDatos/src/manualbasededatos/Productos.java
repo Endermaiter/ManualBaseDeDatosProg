@@ -3,11 +3,8 @@ package manualbasededatos;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.ResultSetMetaData;
-import com.mysql.jdbc.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -229,10 +226,12 @@ public class Productos extends javax.swing.JFrame {
             fila[2] = txtPrecio.getText();
             modelo.addRow(fila);
             
+            JOptionPane.showMessageDialog(null, "Inserción aceptada");
             limpiarCajas();
             con.close();
             }catch(SQLException e){
                 System.out.println(e);
+                JOptionPane.showMessageDialog(null, "La inserción fue rechazada");
          }
     }//GEN-LAST:event_botonInsertarActionPerformed
 
@@ -283,6 +282,7 @@ public class Productos extends javax.swing.JFrame {
                 txtPrecio.setText(rs.getString("Precio"));
                 
             }else{
+                limpiarCajas();
                 JOptionPane.showMessageDialog(null, "No se ha encontrado ningun Prodcuto con ese ID. Inténtelo de nuevo.");
             }
         } catch (SQLException ex) {
@@ -383,16 +383,16 @@ private void mostrarDatosTabla(){
     
     Connection con = null;
         try{
-            DefaultTableModel modelo = (DefaultTableModel) tablaDatos.getModel();
-            tablaDatos.setModel(modelo);
-            for(int i =0;i < tablaDatos.getRowCount();i++){
-                modelo.removeRow(i);
-            }
+            
+            //base de datos
+            
             con = Conexion.establecerConexionBD();
             ps = (PreparedStatement) con.prepareStatement("SELECT * FROM articulos");
-            
-            
             ResultSet rs = ps.executeQuery();
+            
+            //tabla
+            
+            modelo = (DefaultTableModel) tablaDatos.getModel();
             ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
             int cantidadColl = rsMd.getColumnCount();
             while(rs.next()){
